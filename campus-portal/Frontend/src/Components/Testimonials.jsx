@@ -15,7 +15,7 @@ const testimonialsData = [
     imageSrc: student2,
     name: "Nisha",
     department: "Computer Science",
-    about: "I have found new clubs and activities through the portals recommendations. Its a game-changer for campus engagement",
+    about: "I have found new clubs and activities through the portal's recommendations. It's a game-changer for campus engagement.",
   },
   {
     imageSrc: student3,
@@ -26,54 +26,55 @@ const testimonialsData = [
 ];
 
 const cardVariants = {
-  hidden: { y: 50, opacity: 0, scale: 0.8 }, // Cards start small, low, and transparent
+  hidden: { y: 40, opacity: 0, scale: 0.9 },
   visible: { 
     y: 0, 
     opacity: 1, 
     scale: 1,
     transition: { 
-      duration: 0.8, 
+      duration: 0.6, 
       ease: "easeOut" 
     }
   },
   exit: { 
-    y: -50, 
     opacity: 0, 
-    scale: 0.8,
-    transition: { 
-      duration: 0.6, 
-      ease: "easeIn" 
-    }
-  } // New exit animation
+    scale: 0.9,
+    transition: { duration: 0.4 }
+  }
 };
 
 export const Testimonials = () => {
   return (
-    <div className="w-full px-4 py-16 text-white bg-black">
-      <h1 className="mb-12 text-4xl font-bold text-center sm:text-5xl">
-        What Students Say
+    <div className="w-full px-6 py-20 overflow-hidden text-white bg-black">
+      <h1 className="mb-16 text-3xl font-black tracking-tight text-center sm:text-5xl lg:text-6xl">
+        What <span className="text-blue-500">Students</span> Say
       </h1>
-      <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:items-start">
-        <AnimatePresence>
+      
+      {/* Mobile: Vertical stack with padding 
+         Laptop: Horizontal row with gap 
+      */}
+      <div className="flex flex-col items-center gap-10 mx-auto md:flex-row md:justify-center md:items-stretch max-w-7xl">
+        <AnimatePresence mode="wait">
           {testimonialsData.map((testimonial, index) => (
             <motion.div
               key={index}
+              className="flex w-full max-w-sm md:w-1/3" // Flex added to keep card heights equal
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              exit="exit"
+              viewport={{ once: true, amount: 0.2 }} // Changed once to true for better mobile performance
               transition={{ 
-                ...cardVariants.visible.transition, 
-                delay: index * 0.1
+                delay: index * 0.15 
               }}
-              viewport={{ once: false, amount: 0.5 }}
             >
-              <TestCards
-                imageSrc={testimonial.imageSrc}
-                name={testimonial.name}
-                department={testimonial.department}
-                about={testimonial.about}
-              />
+              <div className="w-full transition-transform duration-300 hover:scale-[1.02]">
+                <TestCards
+                  imageSrc={testimonial.imageSrc}
+                  name={testimonial.name}
+                  department={testimonial.department}
+                  about={testimonial.about}
+                />
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>

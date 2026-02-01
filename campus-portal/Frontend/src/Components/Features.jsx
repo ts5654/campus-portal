@@ -3,44 +3,78 @@ import { useInView } from 'react-intersection-observer';
 import { BsFingerprint, BsCalendarEvent, BsBarChart } from 'react-icons/bs';
 
 export const Features = () => {
-  // Use `triggerOnce: false` to re-trigger the animation on any scroll
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0.1,
   });
 
-  const baseClasses = "transition-all duration-1000 transform";
-  // These classes control the rotate and scale animation
-  const animatedClasses = `${inView ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-0 rotate-6'}`;
+  const baseClasses = "transition-all duration-700 transform ease-out";
+  // Mobile par 'rotate' animation thodi subtle rakhi hai taaki scrolling jittery na lage
+  const animatedClasses = inView ? 'opacity-100 scale-100 rotate-0 translate-y-0' : 'opacity-0 scale-90 rotate-3 translate-y-10';
+
+  const features = [
+    {
+      icon: <BsFingerprint />,
+      title: "Smart Attendance",
+      desc: "Mark and track attendance digitally with just one tap.",
+      delay: "delay-[200ms]",
+      color: "from-blue-500/20"
+    },
+    {
+      icon: <BsCalendarEvent />,
+      title: "Event Management",
+      desc: "Never miss a beat. Stay updated with all campus events.",
+      delay: "delay-[400ms]",
+      color: "from-purple-500/20"
+    },
+    {
+      icon: <BsBarChart />,
+      title: "Student Dashboard",
+      desc: "Your academic performance and records in one place.",
+      delay: "delay-[600ms]",
+      color: "from-emerald-500/20"
+    }
+  ];
 
   return (
-    <div className="w-full px-4 py-16 text-white bg-black md:px-8">
-      <h2 className="mb-12 text-4xl font-extrabold text-center md:text-5xl lg:text-6xl">
-        Our Key Features
-      </h2>
-
-      <div ref={ref} className="flex flex-wrap justify-center max-w-6xl gap-6 mx-auto md:gap-8">
-        {/* Smart Attendance Card */}
-        <div className={`w-full md:w-1/3 lg:w-1/4 p-6 colors rounded-xl shadow-xl flex flex-col items-center text-center ${baseClasses} delay-200 ${animatedClasses}`}>
-          <BsFingerprint className="mb-4 text-4xl text-blue-400 md:text-5xl lg:text-6xl" />
-          <h3 className="mb-2 text-2xl font-bold">Smart Attendance</h3>
-          <p className="text-gray-400">Mark and track attendance digitally.</p>
+    <section className="w-full px-6 py-20 text-white bg-black">
+      <div className="mx-auto max-w-7xl">
+        {/* Header Section */}
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-black tracking-tight md:text-5xl lg:text-6xl">
+            Our <span className="text-blue-500">Key Features</span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-sm text-gray-500 md:text-lg">
+            Everything you need to manage your campus life efficiently and digitally.
+          </p>
         </div>
 
-        {/* Event Management Card */}
-        <div className={`w-full md:w-1/3 lg:w-1/4 p-6 colors rounded-xl shadow-xl flex flex-col items-center text-center ${baseClasses} delay-400 ${animatedClasses}`}>
-          <BsCalendarEvent className="mb-4 text-4xl text-blue-400 md:text-5xl lg:text-6xl" />
-          <h3 className="mb-2 text-2xl font-bold">Event Management</h3>
-          <p className="text-gray-400">Stay updated with campus events.</p>
-        </div>
+        {/* Responsive Grid */}
+        <div 
+          ref={ref} 
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-10"
+        >
+          {features.map((f, index) => (
+            <div 
+              key={index}
+              className={`group relative p-8 bg-gray-900/50 border border-gray-800 rounded-3xl overflow-hidden hover:border-blue-500/50 transition-colors ${baseClasses} ${f.delay} ${animatedClasses}`}
+            >
+              {/* Background Glow Effect on Hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${f.color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-        {/* Student Dashboard Card */}
-        <div className={`w-full md:w-1/3 lg:w-1/4 p-6 colors rounded-xl shadow-xl flex flex-col items-center text-center ${baseClasses} delay-600 ${animatedClasses}`}>
-          <BsBarChart className="mb-4 text-4xl text-blue-400 md:text-5xl lg:text-6xl" />
-          <h3 className="mb-2 text-2xl font-bold">Student Dashboard</h3>
-          <p className="text-gray-400">View records and performance.</p>
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="p-4 mb-6 text-5xl text-blue-400 transition-transform duration-500 bg-gray-800 rounded-2xl md:text-6xl group-hover:scale-110">
+                  {f.icon}
+                </div>
+                <h3 className="mb-3 text-2xl font-bold tracking-tight">{f.title}</h3>
+                <p className="leading-relaxed text-gray-400">
+                  {f.desc}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
